@@ -48,6 +48,8 @@ function nextQuestion() {
             if (this.value === '0' || this.value === '1') {
                 const next = this.nextElementSibling;
                 if (next) next.focus();
+                // Auto-submit when all boxes are filled
+                checkAndAutoSubmit();
             } else {
                 this.value = '';
             }
@@ -61,6 +63,15 @@ function nextQuestion() {
         inputDiv.appendChild(input);
     }
     inputDiv.firstChild.focus();
+}
+
+function checkAndAutoSubmit() {
+    const bits = Array.from(document.querySelectorAll('.bit-box')).map(b => b.value);
+    // Check if all boxes are filled
+    if (bits.every(v => v === '0' || v === '1')) {
+        // Small delay to allow the last input to be visible before checking
+        setTimeout(submitAnswer, 100);
+    }
 }
 
 function submitAnswer() {
