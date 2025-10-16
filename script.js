@@ -41,7 +41,7 @@ function nextQuestion() {
     
     for (let i = 0; i < bitCount; i++) {
         const input = document.createElement('input');
-        input.type = 'text';
+        input.type = 'tel';
         input.maxLength = 1;
         input.className = 'bit-box';
         input.oninput = function() {
