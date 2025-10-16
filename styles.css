@@ -409,6 +409,34 @@ header {
     box-shadow: 0 3px 10px rgba(249, 115, 22, 0.4);
 }
 
+/* Highlight user's score */
+.leaderboard-section li.user-score {
+    background: linear-gradient(135deg, rgba(96, 165, 250, 0.4) 0%, rgba(167, 139, 250, 0.4) 100%) !important;
+    border: 3px solid #60a5fa !important;
+    box-shadow: 0 0 25px rgba(96, 165, 250, 0.6) !important;
+    transform: scale(1.02);
+}
+
+.leaderboard-section li.user-score .player-name {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.leaderboard-section li.user-score .player-time {
+    color: #fbbf24;
+    font-weight: 700;
+    font-size: 1.1em;
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(96, 165, 250, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(96, 165, 250, 0.6);
+    }
+}
+
 .player-name {
     flex: 1;
     text-align: left;

@@ -1,4 +1,5 @@
 let pendingScore = null;
+let lastAddedScore = null;
 
 function saveScore(mode, name, time) {
     const data = JSON.parse(localStorage.getItem("leaderboard") || "{}");
@@ -6,9 +7,12 @@ function saveScore(mode, name, time) {
 
     data[mode].push({ name, time });
     data[mode].sort((a, b) => a.time - b.time);
-    data[mode] = data[mode].slice(0, 4);
+    data[mode] = data[mode].slice(0, 3);
 
     localStorage.setItem("leaderboard", JSON.stringify(data));
+    
+    // Store a unique identifier for the last added score
+    lastAddedScore = `${mode}-${name}-${time}`;
 }
 
 function promptForName(mode, time) {
@@ -59,17 +63,34 @@ function showLeaderboard() {
 
         if (data[mode] && data[mode].length > 0) {
             const ol = document.createElement("ol");
+
             data[mode].forEach(entry => {
                 // Validate entry has required properties
                 if (entry && entry.name && typeof entry.time === 'number') {
                     const li = document.createElement("li");
-                    li.innerHTML = `
-                        <span class="player-name">${entry.name}</span>
-                        <span class="player-time">${entry.time.toFixed(2)}s</span>
-                    `;
+                    
+                    // Create unique identifier for this entry
+                    const entryId = `${mode}-${entry.name}-${entry.time}`;
+                    
+                    // Check if this is the user's newly added score
+                    if (lastAddedScore && lastAddedScore === entryId) {
+                        li.classList.add('user-score');
+                    }
+                    
+                    const nameSpan = document.createElement("span");
+                    nameSpan.className = "player-name";
+                    nameSpan.textContent = entry.name;
+                    
+                    const timeSpan = document.createElement("span");
+                    timeSpan.className = "player-time";
+                    timeSpan.textContent = `${entry.time.toFixed(2)}s`;
+                    
+                    li.appendChild(nameSpan);
+                    li.appendChild(timeSpan);
                     ol.appendChild(li);
                 }
             });
+
             section.appendChild(ol);
         } else {
             const empty = document.createElement("p");
@@ -87,6 +108,7 @@ function showLeaderboard() {
 
 function closeLeaderboard() {
     document.getElementById("leaderboard-modal").style.display = "none";
+    lastAddedScore = null;
 }
 
 let enterKeyEnabled = false;
